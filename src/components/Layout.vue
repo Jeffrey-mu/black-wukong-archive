@@ -5,7 +5,7 @@ import Archive from './Archive/index.vue'
   <div class="flex flex-col min-h-screen">
     <nav class="bg-white border-gray-200 dark:bg-gray-900">
       <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-        <a href="https://flowbite.com/" class="flex items-center space-x-3 rtl:space-x-reverse">
+        <a href="https://github.com/Jeffrey-mu/black-wukong-archive" class="flex items-center space-x-3 rtl:space-x-reverse">
           <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">黑神话悟空存档管理</span>
         </a>
         <button data-collapse-toggle="navbar-default" type="button"
@@ -26,7 +26,7 @@ import Archive from './Archive/index.vue'
                 aria-current="page">Home</a>
             </li>
             <li>
-              <a href="https://twitter.com/home"
+              <a href="https://x.com/jiafengwang_yo"
                 class="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">About</a>
             </li>
             <li>
@@ -51,17 +51,17 @@ import Archive from './Archive/index.vue'
     <footer class="bg-white rounded-lg shadow dark:bg-gray-900 m-4">
       <div class="w-full max-w-screen-xl mx-auto p-4 md:py-8">
         <div class="sm:flex sm:items-center sm:justify-between">
-          <a href="https://flowbite.com/" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
+          <a href="https://github.com/Jeffrey-mu/black-wukong-archive" class="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse">
             <span class="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">黑神话悟空存档管理</span>
           </a>
           <ul class="flex flex-wrap items-center mb-6 text-sm font-medium text-gray-500 sm:mb-0 dark:text-gray-400">
             <li>
-              <a href="https://twitter.com/home" class="hover:underline me-4 md:me-6">关于我们</a>
+              <a href="https://x.com/jiafengwang_yo" class="hover:underline me-4 md:me-6">关于我们</a>
             </li>
           </ul>
         </div>
         <hr class="my-6 border-gray-200 sm:mx-auto dark:border-gray-700 lg:my-8" />
-        <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="https://flowbite.com/"
+        <span class="block text-sm text-gray-500 sm:text-center dark:text-gray-400">© 2024 <a href="https://github.com/Jeffrey-mu/black-wukong-archive"
             class="hover:underline">黑神话悟空存档管理™</a>. 版权所有.</span>
       </div>
     </footer>
