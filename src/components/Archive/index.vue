@@ -1,8 +1,10 @@
 
 <script setup>
-import { welcome, setLocalConfig, getArchiveList } from '../../api/index'
+import { welcome, setLocalConfig, getArchiveList, add, getMyArchiveList, useArchive } from '../../api/index'
 import Button from '../Button.vue'
 import { ref, onMounted } from 'vue'
+import 'vue3-toastify/dist/index.css'
+import { toast } from 'vue3-toastify'
 
 onMounted(async () => {
   welcome().then(res => {
@@ -13,8 +15,7 @@ onMounted(async () => {
     await setLocalConfig(JSON.parse(localConfig))
     configData.value = JSON.parse(localConfig)
   }
-
-
+  getMyArchiveListFn(true)
 })
 const constShow = {
   config: false,
@@ -24,7 +25,7 @@ const constShow = {
 const showForm = ref({ ...constShow })
 const configData = ref({
   gamePath: '',
-  saveFile: '',
+  saveDir: '',
   useSave: '',
 })
 const saveData = ref({
@@ -33,7 +34,8 @@ const saveData = ref({
 })
 
 const gameArchive = ref([])
-function handleClick(type) {
+const myGameArchive = ref([])
+function handleClick(type, value = '') {
   showForm.value = { ...constShow }
   switch (type) {
     case 'config':
@@ -51,33 +53,78 @@ function handleClick(type) {
       break
     case 'gameArchive':
       showForm.value.gameArchive = true
-      getArchiveList().then(res => {
-        if (res.code === 200) {
-          gameArchive.value = res.data
-        }
-        console.log(res)
-      })
+      getArchiveListFn(true)
       break
     case 'saveConfig':
       setLocalConfig(configData._rawValue).then(res => {
         if (res.code === 200) {
           configData.value = res.data
+          toast("保存配置成功 !", {
+            type: "success",
+            autoClose: 1000,
+          })
           localStorage.setItem('localConfig', JSON.stringify(configData.value))
         }
       })
       break
+    case 'add':
+      add({ name: saveData.value.name }).then(res => {
+        if (res.code === 200) {
+          getMyArchiveListFn()
+          toast("保存游戏成功 !", {
+            type: "success",
+            autoClose: 1000,
+          })
+        }
+      })
+      break
+    case 'useArchive':
+      useArchive({ name: value }).then(res => {
+        if (res.code === 200) {
+          getArchiveListFn()
+          toast("使用存档成功 !", {
+            type: "success",
+            autoClose: 1000,
+          })
+        }
+      })
+      break
     default:
+      getMyArchiveListFn(true)
       break
   }
+}
+
+function getMyArchiveListFn(showToast = false) {
+  getMyArchiveList().then(res => {
+    if (res.code === 200) {
+      myGameArchive.value = res.data
+      showToast && toast("查询我的存档成功 !", {
+        type: "success",
+        autoClose: 1000,
+      })
+    }
+  })
+}
+function getArchiveListFn(showToast = false) {
+  getArchiveList().then(res => {
+    if (res.code === 200) {
+      gameArchive.value = res.data
+      showToast && toast("查询游戏存档成功 !", {
+        type: "success",
+        autoClose: 1000,
+      })
+    }
+  })
 }
 </script>
 <template>
   <div class="max_width   !mt-5">
     <div class="py-3 flex gap-5">
-      <Button @click="handleClick('config')">配置游戏</Button>
-      <Button @click="handleClick('save')">保存游戏</Button>
-      <Button @click="handleClick('gameArchive')">游戏存档</Button>
       <Button @click="handleClick('myArchive')">我的存档</Button>
+      <Button @click="handleClick('gameArchive')">游戏存档</Button>
+      <Button @click="handleClick('config')">设置配置</Button>
+      <Button @click="handleClick('save')">保存游戏</Button>
     </div>
     <div v-if="showForm.config">
 
@@ -91,7 +138,7 @@ function handleClick(type) {
           </div>
           <div>
             <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900 ">存档文件目录</label>
-            <input type="text" id="first_name" v-model="configData.saveFile"
+            <input type="text" id="first_name" v-model="configData.saveDir"
               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5  "
               placeholder="不可修改仅展示" required disabled />
           </div>
@@ -124,7 +171,7 @@ function handleClick(type) {
               placeholder="查询本地最新修改时间" required disabled />
           </div>
         </div>
-        <Button @click="handleClick('saveConfig')">保存配置</Button>
+        <Button @click="handleClick('add')">保存游戏</Button>
         <Button @click="showForm.save = false">关闭</Button>
       </form>
 
@@ -148,6 +195,22 @@ function handleClick(type) {
     </div>
     <div v-else>
       存档列表
+      <ul>
+        <li v-for="item in myGameArchive" :key="item.name"
+          class="flex items-center justify-between p-2 border-b border-gray-200">
+          <div>
+            <span class="font-bold">文件名：</span>
+            <span class="text-blue-500">{{ item.name }}</span>
+          </div>
+          <div class="text-gray-600">
+            <span class="mr-4">创建日期： <span class="font-medium">{{ new Date(item.birthtime).toLocaleString()
+            }}</span></span>
+            <span>修改日期： <span class="font-medium mr-4">{{ new Date(item.mtimeMs).toLocaleString() }}</span></span>
+            <span class="text-blue-500 cursor-pointer" @click="handleClick('useArchive', item.name)">使用存档</span>
+          </div>
+        </li>
+
+      </ul>
     </div>
   </div>
 </template>

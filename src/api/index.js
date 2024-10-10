@@ -15,11 +15,19 @@ export function getLocalConfig() {
 export function getArchiveList() {
   return fetchWrapper('/archive/getArchiveList')
 }
+export function getMyArchiveList() {
+  return fetchWrapper('/archive/getMyArchiveList')
+}
 
 export function setLocalConfig(data) {
   return fetchWrapper('/archive/setLocalConfig', 'post', data)
 }
-
+export function add(data) {
+  return fetchWrapper('/archive/add', 'post', data)
+}
+export function useArchive(data) {
+  return fetchWrapper('/archive/useArchive', 'post', data)
+}
 
 export function welcome() {
   return fetchWrapper('/welcome')
