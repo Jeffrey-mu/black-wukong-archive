@@ -11,7 +11,7 @@ onMounted(async () => {
     console.log(res)
   })
   const localConfig = localStorage.getItem('localConfig')
-  if (localConfig !== undefined) {
+  if (localConfig) {
     await setLocalConfig(JSON.parse(localConfig))
     configData.value = JSON.parse(localConfig)
   }
